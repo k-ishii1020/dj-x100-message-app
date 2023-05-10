@@ -95,7 +95,7 @@ namespace X100_Message
             var serialPort = (SerialPort)sender;
             var buffer = new byte[serialPort.BytesToRead];
             var bytesRead = serialPort.Read(buffer, 0, buffer.Length);
-            var response = Encoding.ASCII.GetString(buffer, 0, bytesRead);
+            var response = Encoding.GetEncoding("Shift_JIS").GetString(buffer, 0, bytesRead);
 
             if (firstConnectFlg)
             {
@@ -175,6 +175,7 @@ namespace X100_Message
         private void InitComPort()
         {
             String[] portList = SerialPort.GetPortNames();
+            Array.Sort(portList);
 
             foreach (String portName in portList)
             {
@@ -199,6 +200,7 @@ namespace X100_Message
         {
             logTextBox.ResetText();
         }
+
     }
 
 

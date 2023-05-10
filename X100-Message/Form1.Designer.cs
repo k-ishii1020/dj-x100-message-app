@@ -30,6 +30,7 @@
         {
             menuStrip1 = new MenuStrip();
             ファイルToolStripMenuItem = new ToolStripMenuItem();
+            ログクリアCToolStripMenuItem = new ToolStripMenuItem();
             終了ToolStripMenuItem = new ToolStripMenuItem();
             logTextBox = new TextBox();
             statusStrip1 = new StatusStrip();
@@ -40,7 +41,6 @@
             comLabel = new Label();
             msgOutputBtn = new Button();
             logFileOutFlg = new CheckBox();
-            ログクリアCToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
             SuspendLayout();
@@ -61,10 +61,17 @@
             ファイルToolStripMenuItem.Size = new Size(67, 20);
             ファイルToolStripMenuItem.Text = "ファイル(&F)";
             // 
+            // ログクリアCToolStripMenuItem
+            // 
+            ログクリアCToolStripMenuItem.Name = "ログクリアCToolStripMenuItem";
+            ログクリアCToolStripMenuItem.Size = new Size(133, 22);
+            ログクリアCToolStripMenuItem.Text = "ログクリア(&C)";
+            ログクリアCToolStripMenuItem.Click += ログクリアCToolStripMenuItem_Click;
+            // 
             // 終了ToolStripMenuItem
             // 
             終了ToolStripMenuItem.Name = "終了ToolStripMenuItem";
-            終了ToolStripMenuItem.Size = new Size(180, 22);
+            終了ToolStripMenuItem.Size = new Size(133, 22);
             終了ToolStripMenuItem.Text = "終了(&X)";
             終了ToolStripMenuItem.Click += 終了ToolStripMenuItem_Click;
             // 
@@ -149,6 +156,7 @@
             // 
             // logFileOutFlg
             // 
+            logFileOutFlg.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             logFileOutFlg.AutoSize = true;
             logFileOutFlg.Location = new Point(418, 666);
             logFileOutFlg.Name = "logFileOutFlg";
@@ -156,13 +164,6 @@
             logFileOutFlg.TabIndex = 11;
             logFileOutFlg.Text = "ログ出力";
             logFileOutFlg.UseVisualStyleBackColor = true;
-            // 
-            // ログクリアCToolStripMenuItem
-            // 
-            ログクリアCToolStripMenuItem.Name = "ログクリアCToolStripMenuItem";
-            ログクリアCToolStripMenuItem.Size = new Size(180, 22);
-            ログクリアCToolStripMenuItem.Text = "ログクリア(&C)";
-            ログクリアCToolStripMenuItem.Click += ログクリアCToolStripMenuItem_Click;
             // 
             // Form1
             // 
