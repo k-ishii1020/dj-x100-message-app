@@ -195,6 +195,10 @@ namespace X100_Message
             Application.Exit();
         }
 
+        private void ÉçÉOÉNÉäÉACToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            logTextBox.ResetText();
+        }
     }
 
 

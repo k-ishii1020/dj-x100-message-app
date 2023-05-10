@@ -40,6 +40,7 @@
             comLabel = new Label();
             msgOutputBtn = new Button();
             logFileOutFlg = new CheckBox();
+            ログクリアCToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
             SuspendLayout();
@@ -55,7 +56,7 @@
             // 
             // ファイルToolStripMenuItem
             // 
-            ファイルToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { 終了ToolStripMenuItem });
+            ファイルToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { ログクリアCToolStripMenuItem, 終了ToolStripMenuItem });
             ファイルToolStripMenuItem.Name = "ファイルToolStripMenuItem";
             ファイルToolStripMenuItem.Size = new Size(67, 20);
             ファイルToolStripMenuItem.Text = "ファイル(&F)";
@@ -63,7 +64,7 @@
             // 終了ToolStripMenuItem
             // 
             終了ToolStripMenuItem.Name = "終了ToolStripMenuItem";
-            終了ToolStripMenuItem.Size = new Size(113, 22);
+            終了ToolStripMenuItem.Size = new Size(180, 22);
             終了ToolStripMenuItem.Text = "終了(&X)";
             終了ToolStripMenuItem.Click += 終了ToolStripMenuItem_Click;
             // 
@@ -99,7 +100,7 @@
             // 
             toolStripStatusLabel2.ImageAlign = ContentAlignment.BottomCenter;
             toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            toolStripStatusLabel2.Size = new Size(993, 17);
+            toolStripStatusLabel2.Size = new Size(1024, 17);
             toolStripStatusLabel2.Spring = true;
             toolStripStatusLabel2.Text = " （秘密の保護）第59条 何人も法律に別段の定めがある場合を除くほか、特定の相手方に対して行われる無線通信を傍受してその存在若しくは内容を漏らし、又はこれを窃用してはならない。";
             toolStripStatusLabel2.TextAlign = ContentAlignment.MiddleRight;
@@ -156,6 +157,13 @@
             logFileOutFlg.Text = "ログ出力";
             logFileOutFlg.UseVisualStyleBackColor = true;
             // 
+            // ログクリアCToolStripMenuItem
+            // 
+            ログクリアCToolStripMenuItem.Name = "ログクリアCToolStripMenuItem";
+            ログクリアCToolStripMenuItem.Size = new Size(180, 22);
+            ログクリアCToolStripMenuItem.Text = "ログクリア(&C)";
+            ログクリアCToolStripMenuItem.Click += ログクリアCToolStripMenuItem_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -195,5 +203,6 @@
         private CheckBox logFileOutFlg;
         private ToolStripStatusLabel warnLabel;
         private ToolStripStatusLabel toolStripStatusLabel2;
+        private ToolStripMenuItem ログクリアCToolStripMenuItem;
     }
 }
