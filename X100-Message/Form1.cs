@@ -1,23 +1,19 @@
-using System.IO.Ports;
-using System.Text;
-
-
-
 namespace X100_Message
 {
     public partial class Form1 : Form
     {
+        Uart uart = new Uart();
 
-        private static string DJ_X100_OPEN = "AL~DJ-X100\r";
-        private SerialPort serialPort;
 
+        // 
         private bool firstConnectFlg = true;
-        private bool djx100ConnextFlg = false;
+        private bool djx100ConnectFlg = false;
+        private string lastCommandSent = "";
 
         public Form1()
         {
             InitializeComponent();
-
+            uart.DataReceived += DataReceived;
         }
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -25,10 +21,7 @@ namespace X100_Message
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (serialPort != null && serialPort.IsOpen)
-            {
-                serialPort.Close();
-            }
+            uart.Close();
             Application.Exit();
         }
 
@@ -41,11 +34,13 @@ namespace X100_Message
                 CloseConnection();
                 return;
             }
-            if (InitSerialPort())
+
+
+            if (uart.InitSerialPort(comComboBox.Text))
             {
                 await Task.Delay(500);
 
-                if (djx100ConnextFlg)
+                if (djx100ConnectFlg)
                 {
                     connectBtn.Text = "切断";
                     msgOutputBtn.Enabled = true;
@@ -59,49 +54,19 @@ namespace X100_Message
             }
         }
 
-        private bool InitSerialPort()
+
+
+
+        private void DataReceived(object sender, DataReceivedEventArgs e)
         {
-            // COMポートの設定
-            var portName = comComboBox.Text;
-            var baudRate = 9600;
-            var dataBits = 8;
-            var parity = Parity.None;
-            var stopBits = StopBits.One;
+            var response = e.Data;
 
-            serialPort = new SerialPort(portName, baudRate, parity, dataBits, stopBits);
-            serialPort.DtrEnable = true;
-            serialPort.RtsEnable = true;
-
-            serialPort.DataReceived += SerialPort_DataReceived;
-
-            try
-            {
-                serialPort.Open();
-                var open = Encoding.ASCII.GetBytes(DJ_X100_OPEN);
-                serialPort.BaseStream.WriteAsync(open, 0, open.Length);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("接続エラーが発生しました: " + ex.Message, "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                serialPort.Close();
-                return false;
-            }
-            return true;
-        }
-
-
-        private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
-        {
-            var serialPort = (SerialPort)sender;
-            var buffer = new byte[serialPort.BytesToRead];
-            var bytesRead = serialPort.Read(buffer, 0, buffer.Length);
-            var response = Encoding.GetEncoding("Shift_JIS").GetString(buffer, 0, bytesRead);
 
             if (firstConnectFlg)
             {
-                if (response.Equals("\r\nOK\r\n"))
+                if (response.Equals("\r\nDJ-X100\r\n"))
                 {
-                    djx100ConnextFlg = true;
+                    djx100ConnectFlg = true;
                     firstConnectFlg = false;
                     warnLabel.Text = "DJ-X100接続済み";
                 }
@@ -111,49 +76,56 @@ namespace X100_Message
                 }
                 return;
             }
-            if (response.Equals("\r\nOK\r\n"))
+
+            switch (lastCommandSent)
             {
-                return;
+                case "VER":
+                    MessageBox.Show(response, "", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    return;
+                
+                
+                default:
+                    // 受信データをテキストボックスに表示（UIスレッドで実行）
+                    this.Invoke(new Action(() =>
+
+                    {
+
+                        DateTime now = DateTime.Now;
+                        logTextBox.AppendText($"{now} >> {response}\r\n");
+
+                        if (logFileOutFlg.Checked)
+                        {
+                            try
+                            {
+                                File.AppendAllText($"received_message_{now.ToString("yyyyMMdd")}.txt", $"{now} >> {response}" + Environment.NewLine);
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show("メッセージログ出力エラー " + ex.Message, "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+
+                        }
+                    }));
+                    break;
+
             }
-
-            // 受信データをテキストボックスに表示（UIスレッドで実行）
-            this.Invoke(new Action(() =>
-
-            {
-
-                DateTime now = DateTime.Now;
-                logTextBox.AppendText($"{now} >> {response}\r\n");
-
-                if (logFileOutFlg.Checked)
-                {
-                    try
-                    {
-                        File.AppendAllText($"received_message_{now.ToString("yyyyMMdd")}.txt", $"{now} >> {response}" + Environment.NewLine);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("メッセージログ出力エラー " + ex.Message, "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-
-                }
-            }));
         }
 
         private void CloseConnection()
         {
-            serialPort.Close();
+            uart.Close();
             MessageBox.Show("再接続する場合はDJ-X100を再起動してください", "", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
             warnLabel.Text = "接続していません";
             connectBtn.Text = "接続";
             msgOutputBtn.Text = "メッセージ出力開始";
             msgOutputBtn.Enabled = false;
             firstConnectFlg = true;
-
         }
 
-        private async void MsgOutputBtn_Click(object sender, EventArgs e)
+
+        private void MsgOutputBtn_Click(object sender, EventArgs e)
         {
-            if (msgOutputBtn.Text.Equals("メッセージ出力終了") && serialPort.IsOpen)
+            if (msgOutputBtn.Text.Equals("メッセージ出力終了") && uart.IsOpen())
             {
                 CloseConnection();
                 return;
@@ -161,12 +133,8 @@ namespace X100_Message
 
             msgOutputBtn.Text = "メッセージ出力終了";
 
-            var open = Encoding.ASCII.GetBytes(DJ_X100_OPEN);
-            await serialPort.BaseStream.WriteAsync(open, 0, open.Length);
-            await Task.Delay(100);
-
-            var thru = Encoding.ASCII.GetBytes("AL~THRU\r");
-            await serialPort.BaseStream.WriteAsync(thru, 0, thru.Length);
+            //await Task.Delay(100);
+            uart.SendCmd(Command.OUTLINE);
         }
 
 
@@ -174,10 +142,7 @@ namespace X100_Message
         // COMポート一覧の初期化処理
         private void InitComPort()
         {
-            String[] portList = SerialPort.GetPortNames();
-            Array.Sort(portList);
-
-            foreach (String portName in portList)
+            foreach (String portName in uart.GetPortLists())
             {
                 comComboBox.Items.Add(portName);
             }
@@ -189,10 +154,7 @@ namespace X100_Message
 
         private void 終了ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (serialPort != null && serialPort.IsOpen)
-            {
-                serialPort.Close();
-            }
+            uart.Close();
             Application.Exit();
         }
 
