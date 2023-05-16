@@ -67,14 +67,14 @@
             // ログクリアCToolStripMenuItem
             // 
             ログクリアCToolStripMenuItem.Name = "ログクリアCToolStripMenuItem";
-            ログクリアCToolStripMenuItem.Size = new Size(133, 22);
+            ログクリアCToolStripMenuItem.Size = new Size(180, 22);
             ログクリアCToolStripMenuItem.Text = "ログクリア(&C)";
             ログクリアCToolStripMenuItem.Click += ログクリアCToolStripMenuItem_Click;
             // 
             // 終了ToolStripMenuItem
             // 
             終了ToolStripMenuItem.Name = "終了ToolStripMenuItem";
-            終了ToolStripMenuItem.Size = new Size(133, 22);
+            終了ToolStripMenuItem.Size = new Size(180, 22);
             終了ToolStripMenuItem.Text = "終了(&X)";
             終了ToolStripMenuItem.Click += 終了ToolStripMenuItem_Click;
             // 
@@ -185,7 +185,7 @@
             // djx100Ver
             // 
             djx100Ver.Enabled = false;
-            djx100Ver.Location = new Point(958, 668);
+            djx100Ver.Location = new Point(979, 664);
             djx100Ver.Name = "djx100Ver";
             djx100Ver.Size = new Size(135, 26);
             djx100Ver.TabIndex = 12;
