@@ -17,6 +17,12 @@
     <DebugType>full</DebugType>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <Version>$(VersionPrefix)1.1.0</Version>
+    <Copyright>kaz(@k-ishii1020)</Copyright>
+
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="System.IO.Ports" Version="7.0.0" />
   </ItemGroup>
