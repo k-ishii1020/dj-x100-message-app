@@ -13,7 +13,5 @@ namespace X100_Message
         public const string RESTART = "RESTART";
         public const string OUTLINE = "THRU";
         public const string VER = "VER";
-
-
     }
 }
