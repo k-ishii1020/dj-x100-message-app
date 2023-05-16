@@ -4,11 +4,10 @@ namespace X100_Message
     {
         Uart uart = new Uart();
 
-
         // 
         private bool firstConnectFlg = true;
         private bool djx100ConnectFlg = false;
-        private string lastCommandSent = "";
+        private string lastSendCmd = "";
 
         public Form1()
         {
@@ -25,7 +24,13 @@ namespace X100_Message
             Application.Exit();
         }
 
-        // 無線機に接続
+        private void SendCmd(string cmd)
+        {
+            lastSendCmd = cmd;
+            uart.SendCmd(cmd);
+        }
+
+        // DJ-X100に接続
         private async void ConnectBtn_Click(object sender, EventArgs e)
         {
 
@@ -38,12 +43,13 @@ namespace X100_Message
 
             if (uart.InitSerialPort(comComboBox.Text))
             {
-                await Task.Delay(500);
+                await Task.Delay(500); // 非同期で受信しているため待機
 
                 if (djx100ConnectFlg)
                 {
                     connectBtn.Text = "切断";
                     msgOutputBtn.Enabled = true;
+                    djx100Ver.Enabled = true;
                 }
                 else
                 {
@@ -56,12 +62,12 @@ namespace X100_Message
 
 
 
-
+        //非同期でコマンド受信待機している（イベントハンドラ）
         private void DataReceived(object sender, DataReceivedEventArgs e)
         {
             var response = e.Data;
 
-
+            // 初回受信時
             if (firstConnectFlg)
             {
                 if (response.Equals("\r\nDJ-X100\r\n"))
@@ -69,6 +75,7 @@ namespace X100_Message
                     djx100ConnectFlg = true;
                     firstConnectFlg = false;
                     warnLabel.Text = "DJ-X100接続済み";
+
                 }
                 else
                 {
@@ -77,13 +84,13 @@ namespace X100_Message
                 return;
             }
 
-            switch (lastCommandSent)
+            switch (lastSendCmd)
             {
-                case "VER":
-                    MessageBox.Show(response, "", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                case Command.VER:
+                    MessageBox.Show(response, "DJ-X100バージョン情報", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                     return;
-                
-                
+
+
                 default:
                     // 受信データをテキストボックスに表示（UIスレッドで実行）
                     this.Invoke(new Action(() =>
@@ -132,9 +139,7 @@ namespace X100_Message
             }
 
             msgOutputBtn.Text = "メッセージ出力終了";
-
-            //await Task.Delay(100);
-            uart.SendCmd(Command.OUTLINE);
+            SendCmd(Command.OUTLINE);
         }
 
 
@@ -142,7 +147,7 @@ namespace X100_Message
         // COMポート一覧の初期化処理
         private void InitComPort()
         {
-            foreach (String portName in uart.GetPortLists())
+            foreach (String portName in Uart.GetPortLists())
             {
                 comComboBox.Items.Add(portName);
             }
@@ -163,6 +168,15 @@ namespace X100_Message
             logTextBox.ResetText();
         }
 
+        private void djx100Ver_Click(object sender, EventArgs e)
+        {
+            SendCmd(Command.VER);
+        }
+
+        private void バージョン情報ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("DJ-X100メッセージロガー\nVer1.1.0\nCopyright(C) 2023 by kaz", "バージョン情報", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+        }
     }
 
 

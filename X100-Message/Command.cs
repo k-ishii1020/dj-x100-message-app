@@ -8,12 +8,11 @@ namespace X100_Message
 {
     public class Command
     {
-        public static string PREPARE_MEMORY_WRITE = "DJ-X100"; // 書き込み準備
-        public static string WHO = "WHO";
-        public static string RESTART = "RESTART";
-        public static string OUTLINE = "THRU";
-
-        public static string VER = "VER";
+        public const string PREPARE_MEMORY_WRITE = "DJ-X100"; // 書き込み準備
+        public const string WHO = "WHO";
+        public const string RESTART = "RESTART";
+        public const string OUTLINE = "THRU";
+        public const string VER = "VER";
 
 
     }

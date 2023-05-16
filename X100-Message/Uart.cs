@@ -59,7 +59,7 @@ namespace X100_Message
             }
         }
 
-        public String[] GetPortLists()
+        public static String[] GetPortLists()
         {
             String[] portList = SerialPort.GetPortNames();
             Array.Sort(portList);

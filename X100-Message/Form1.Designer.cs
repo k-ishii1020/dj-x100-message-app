@@ -32,6 +32,8 @@
             ファイルToolStripMenuItem = new ToolStripMenuItem();
             ログクリアCToolStripMenuItem = new ToolStripMenuItem();
             終了ToolStripMenuItem = new ToolStripMenuItem();
+            toolStripMenuItem1 = new ToolStripMenuItem();
+            バージョン情報ToolStripMenuItem = new ToolStripMenuItem();
             logTextBox = new TextBox();
             statusStrip1 = new StatusStrip();
             warnLabel = new ToolStripStatusLabel();
@@ -41,13 +43,14 @@
             comLabel = new Label();
             msgOutputBtn = new Button();
             logFileOutFlg = new CheckBox();
+            djx100Ver = new Button();
             menuStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { ファイルToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { ファイルToolStripMenuItem, toolStripMenuItem1 });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(1126, 24);
@@ -74,6 +77,20 @@
             終了ToolStripMenuItem.Size = new Size(133, 22);
             終了ToolStripMenuItem.Text = "終了(&X)";
             終了ToolStripMenuItem.Click += 終了ToolStripMenuItem_Click;
+            // 
+            // toolStripMenuItem1
+            // 
+            toolStripMenuItem1.DropDownItems.AddRange(new ToolStripItem[] { バージョン情報ToolStripMenuItem });
+            toolStripMenuItem1.Name = "toolStripMenuItem1";
+            toolStripMenuItem1.Size = new Size(67, 20);
+            toolStripMenuItem1.Text = "その他(&H)";
+            // 
+            // バージョン情報ToolStripMenuItem
+            // 
+            バージョン情報ToolStripMenuItem.Name = "バージョン情報ToolStripMenuItem";
+            バージョン情報ToolStripMenuItem.Size = new Size(180, 22);
+            バージョン情報ToolStripMenuItem.Text = "バージョン情報";
+            バージョン情報ToolStripMenuItem.Click += バージョン情報ToolStripMenuItem_Click;
             // 
             // logTextBox
             // 
@@ -165,11 +182,23 @@
             logFileOutFlg.Text = "ログ出力";
             logFileOutFlg.UseVisualStyleBackColor = true;
             // 
+            // djx100Ver
+            // 
+            djx100Ver.Enabled = false;
+            djx100Ver.Location = new Point(958, 668);
+            djx100Ver.Name = "djx100Ver";
+            djx100Ver.Size = new Size(135, 26);
+            djx100Ver.TabIndex = 12;
+            djx100Ver.Text = "DJ-X100バージョン情報";
+            djx100Ver.UseVisualStyleBackColor = true;
+            djx100Ver.Click += djx100Ver_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1126, 728);
+            Controls.Add(djx100Ver);
             Controls.Add(logFileOutFlg);
             Controls.Add(msgOutputBtn);
             Controls.Add(comLabel);
@@ -205,5 +234,8 @@
         private ToolStripStatusLabel warnLabel;
         private ToolStripStatusLabel toolStripStatusLabel2;
         private ToolStripMenuItem ログクリアCToolStripMenuItem;
+        private ToolStripMenuItem toolStripMenuItem1;
+        private ToolStripMenuItem バージョン情報ToolStripMenuItem;
+        private Button djx100Ver;
     }
 }
