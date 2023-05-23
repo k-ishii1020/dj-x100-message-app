@@ -152,6 +152,11 @@ namespace X100_Message
             }
 
             msgOutputBtn.Text = "メッセージ出力終了";
+            djx100Ver.Enabled = false;
+            ext1EnableBtn.Enabled = false;
+            ext1DisableBtn.Enabled = false;
+            ext2EnableBtn.Enabled = false;
+            ext2DisableBtn.Enabled = false;
             SendCmd(Command.OUTLINE);
         }
 
