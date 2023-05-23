@@ -50,6 +50,10 @@ namespace X100_Message
                     connectBtn.Text = "切断";
                     msgOutputBtn.Enabled = true;
                     djx100Ver.Enabled = true;
+                    ext1EnableBtn.Enabled = true;
+                    ext1DisableBtn.Enabled = true;
+                    ext2EnableBtn.Enabled = true;
+                    ext2DisableBtn.Enabled = true;
                 }
                 else
                 {
@@ -88,6 +92,15 @@ namespace X100_Message
             {
                 case Command.VER:
                     MessageBox.Show(response, "DJ-X100バージョン情報", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    return;
+                case Command.EXT1_DISABLE:
+                    MessageBox.Show("拡張機能1を無効化しました", "", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    return;
+                case Command.EXT2_ENABLE:
+                    MessageBox.Show("拡張機能2を有効化しました", "", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    return;
+                case Command.EXT2_DISABLE:
+                    MessageBox.Show("拡張機能2を無効化しました", "", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                     return;
 
 
@@ -175,7 +188,44 @@ namespace X100_Message
 
         private void バージョン情報ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("DJ-X100メッセージロガー\nVer1.1.0\nCopyright(C) 2023 by kaz", "バージョン情報", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+            MessageBox.Show("DJ-X100メッセージロガー\nVer1.2.0\nCopyright(C) 2023 by kaz", "バージョン情報", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+        }
+
+
+        private void ext1DisableBtn_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("拡張機能関連の操作は自己責任です。\nよろしいですか？", "警告", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                SendCmd(Command.EXT1_DISABLE);
+            }
+        }
+
+        private void ext2EnableBtn_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("拡張機能関連の操作は自己責任です。\nよろしいですか？", "警告", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                SendCmd(Command.EXT2_ENABLE);
+            }
+        }
+        private void ext2DisableBtn_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("拡張機能関連の操作は自己責任です。\nよろしいですか？", "警告", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                SendCmd(Command.EXT2_DISABLE);
+            }
+
+        }
+
+        private void ext1EnableBtn_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("工事中", "", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+
         }
     }
 

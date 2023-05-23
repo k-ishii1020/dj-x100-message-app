@@ -44,6 +44,10 @@
             msgOutputBtn = new Button();
             logFileOutFlg = new CheckBox();
             djx100Ver = new Button();
+            ext2DisableBtn = new Button();
+            ext1DisableBtn = new Button();
+            ext2EnableBtn = new Button();
+            ext1EnableBtn = new Button();
             menuStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
             SuspendLayout();
@@ -67,14 +71,14 @@
             // ログクリアCToolStripMenuItem
             // 
             ログクリアCToolStripMenuItem.Name = "ログクリアCToolStripMenuItem";
-            ログクリアCToolStripMenuItem.Size = new Size(180, 22);
+            ログクリアCToolStripMenuItem.Size = new Size(133, 22);
             ログクリアCToolStripMenuItem.Text = "ログクリア(&C)";
             ログクリアCToolStripMenuItem.Click += ログクリアCToolStripMenuItem_Click;
             // 
             // 終了ToolStripMenuItem
             // 
             終了ToolStripMenuItem.Name = "終了ToolStripMenuItem";
-            終了ToolStripMenuItem.Size = new Size(180, 22);
+            終了ToolStripMenuItem.Size = new Size(133, 22);
             終了ToolStripMenuItem.Text = "終了(&X)";
             終了ToolStripMenuItem.Click += 終了ToolStripMenuItem_Click;
             // 
@@ -88,7 +92,7 @@
             // バージョン情報ToolStripMenuItem
             // 
             バージョン情報ToolStripMenuItem.Name = "バージョン情報ToolStripMenuItem";
-            バージョン情報ToolStripMenuItem.Size = new Size(180, 22);
+            バージョン情報ToolStripMenuItem.Size = new Size(142, 22);
             バージョン情報ToolStripMenuItem.Text = "バージョン情報";
             バージョン情報ToolStripMenuItem.Click += バージョン情報ToolStripMenuItem_Click;
             // 
@@ -132,7 +136,7 @@
             // connectBtn
             // 
             connectBtn.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            connectBtn.Location = new Point(12, 664);
+            connectBtn.Location = new Point(12, 667);
             connectBtn.Name = "connectBtn";
             connectBtn.Size = new Size(75, 23);
             connectBtn.TabIndex = 7;
@@ -144,7 +148,7 @@
             // 
             comComboBox.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             comComboBox.FormattingEnabled = true;
-            comComboBox.Location = new Point(291, 664);
+            comComboBox.Location = new Point(291, 667);
             comComboBox.Name = "comComboBox";
             comComboBox.Size = new Size(121, 23);
             comComboBox.TabIndex = 8;
@@ -153,7 +157,7 @@
             // 
             comLabel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             comLabel.AutoSize = true;
-            comLabel.Location = new Point(225, 668);
+            comLabel.Location = new Point(225, 671);
             comLabel.Name = "comLabel";
             comLabel.Size = new Size(60, 15);
             comLabel.TabIndex = 9;
@@ -163,7 +167,7 @@
             // 
             msgOutputBtn.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             msgOutputBtn.Enabled = false;
-            msgOutputBtn.Location = new Point(102, 664);
+            msgOutputBtn.Location = new Point(102, 667);
             msgOutputBtn.Name = "msgOutputBtn";
             msgOutputBtn.Size = new Size(117, 23);
             msgOutputBtn.TabIndex = 10;
@@ -175,7 +179,7 @@
             // 
             logFileOutFlg.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             logFileOutFlg.AutoSize = true;
-            logFileOutFlg.Location = new Point(418, 666);
+            logFileOutFlg.Location = new Point(418, 669);
             logFileOutFlg.Name = "logFileOutFlg";
             logFileOutFlg.Size = new Size(68, 19);
             logFileOutFlg.TabIndex = 11;
@@ -185,19 +189,67 @@
             // djx100Ver
             // 
             djx100Ver.Enabled = false;
-            djx100Ver.Location = new Point(979, 664);
+            djx100Ver.Location = new Point(979, 666);
             djx100Ver.Name = "djx100Ver";
-            djx100Ver.Size = new Size(135, 26);
+            djx100Ver.Size = new Size(135, 24);
             djx100Ver.TabIndex = 12;
             djx100Ver.Text = "DJ-X100バージョン情報";
             djx100Ver.UseVisualStyleBackColor = true;
             djx100Ver.Click += djx100Ver_Click;
+            // 
+            // ext2DisableBtn
+            // 
+            ext2DisableBtn.Enabled = false;
+            ext2DisableBtn.Location = new Point(860, 666);
+            ext2DisableBtn.Name = "ext2DisableBtn";
+            ext2DisableBtn.Size = new Size(113, 23);
+            ext2DisableBtn.TabIndex = 13;
+            ext2DisableBtn.Text = "拡張機能2無効化";
+            ext2DisableBtn.UseVisualStyleBackColor = true;
+            ext2DisableBtn.Click += ext2DisableBtn_Click;
+            // 
+            // ext1DisableBtn
+            // 
+            ext1DisableBtn.Enabled = false;
+            ext1DisableBtn.Location = new Point(618, 666);
+            ext1DisableBtn.Name = "ext1DisableBtn";
+            ext1DisableBtn.Size = new Size(115, 23);
+            ext1DisableBtn.TabIndex = 14;
+            ext1DisableBtn.Text = "拡張機能1無効化";
+            ext1DisableBtn.UseVisualStyleBackColor = true;
+            ext1DisableBtn.Click += ext1DisableBtn_Click;
+            // 
+            // ext2EnableBtn
+            // 
+            ext2EnableBtn.Enabled = false;
+            ext2EnableBtn.Location = new Point(739, 666);
+            ext2EnableBtn.Name = "ext2EnableBtn";
+            ext2EnableBtn.Size = new Size(115, 23);
+            ext2EnableBtn.TabIndex = 15;
+            ext2EnableBtn.Text = "拡張機能2有効化";
+            ext2EnableBtn.UseVisualStyleBackColor = true;
+            ext2EnableBtn.Click += ext2EnableBtn_Click;
+            // 
+            // ext1EnableBtn
+            // 
+            ext1EnableBtn.Enabled = false;
+            ext1EnableBtn.Location = new Point(497, 666);
+            ext1EnableBtn.Name = "ext1EnableBtn";
+            ext1EnableBtn.Size = new Size(115, 23);
+            ext1EnableBtn.TabIndex = 16;
+            ext1EnableBtn.Text = "拡張機能1有効化";
+            ext1EnableBtn.UseVisualStyleBackColor = true;
+            ext1EnableBtn.Click += ext1EnableBtn_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1126, 728);
+            Controls.Add(ext1EnableBtn);
+            Controls.Add(ext2EnableBtn);
+            Controls.Add(ext1DisableBtn);
+            Controls.Add(ext2DisableBtn);
             Controls.Add(djx100Ver);
             Controls.Add(logFileOutFlg);
             Controls.Add(msgOutputBtn);
@@ -237,5 +289,9 @@
         private ToolStripMenuItem toolStripMenuItem1;
         private ToolStripMenuItem バージョン情報ToolStripMenuItem;
         private Button djx100Ver;
+        private Button ext2DisableBtn;
+        private Button ext1DisableBtn;
+        private Button ext2EnableBtn;
+        private Button ext1EnableBtn;
     }
 }

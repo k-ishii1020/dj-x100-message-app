@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace X100_Message
 {
     public class Command
@@ -13,5 +8,9 @@ namespace X100_Message
         public const string RESTART = "RESTART";
         public const string OUTLINE = "THRU";
         public const string VER = "VER";
+
+        public const string EXT1_DISABLE = "EXT10";
+        public const string EXT2_ENABLE = "EXT21";
+        public const string EXT2_DISABLE = "EXT20";
     }
 }
