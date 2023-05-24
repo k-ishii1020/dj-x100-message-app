@@ -18,7 +18,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>$(VersionPrefix)1.2.0</Version>
+    <Version>$(VersionPrefix)1.2.2</Version>
     <Copyright>kaz(@k-ishii1020)</Copyright>
 
   </PropertyGroup>

@@ -17,6 +17,7 @@ namespace X100_Message
         private void Form1_Load(object sender, EventArgs e)
         {
             InitComPort();
+            InitFont();
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -175,6 +176,48 @@ namespace X100_Message
             }
         }
 
+        private void InitFont()
+        {
+            fontSizeComboBox.Items.Add("7");
+            fontSizeComboBox.Items.Add("8");
+            fontSizeComboBox.Items.Add("10");
+            fontSizeComboBox.Items.Add("12");
+            fontSizeComboBox.Items.Add("14");
+            fontSizeComboBox.Items.Add("16");
+            fontSizeComboBox.Items.Add("18");
+            fontSizeComboBox.Items.Add("20");
+            fontSizeComboBox.Items.Add("24");
+            // デフォルトのフォントサイズを設定
+            float defaultFontSize = 8.0f;
+            logTextBox.Font = new Font(logTextBox.Font.FontFamily, defaultFontSize);
+            fontSizeComboBox.SelectedItem = defaultFontSize.ToString();
+            foreach (FontFamily font in FontFamily.Families)
+            {
+                fontComboBox.Items.Add(font.Name);
+            }
+
+            // デフォルトのフォントを設定
+            fontComboBox.SelectedItem = logTextBox.Font.FontFamily.Name;
+
+        }
+
+        private void FontSizeComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string selectedFontSize = (string)fontSizeComboBox.SelectedItem;
+            float fontSize = 8.0f;
+            if (float.TryParse(selectedFontSize, out fontSize))
+            {
+                float.Parse(selectedFontSize);
+            }
+            logTextBox.Font = new Font(logTextBox.Font.FontFamily, fontSize);
+        }
+
+        private void FontComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string selectedFont = (string)fontComboBox.SelectedItem;
+            logTextBox.Font = new Font(selectedFont, logTextBox.Font.Size);
+        }
+
         private void 終了ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             uart.Close();
@@ -186,20 +229,15 @@ namespace X100_Message
             logTextBox.ResetText();
         }
 
-        private void djx100Ver_Click(object sender, EventArgs e)
-        {
-            SendCmd(Command.VER);
-        }
-
         private void バージョン情報ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("DJ-X100メッセージロガー\nVer1.2.0\nCopyright(C) 2023 by kaz", "バージョン情報", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+            MessageBox.Show("DJ-X100メッセージロガー\nVer1.2.2\nCopyright(C) 2023 by kaz", "バージョン情報", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
         }
 
 
         private void ext1DisableBtn_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("拡張機能関連の操作は自己責任です。\nよろしいですか？", "警告", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult result = MessageBox.Show("拡張機能関連の操作も自己責任です。\nよろしいですか？", "警告", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result == DialogResult.Yes)
             {
@@ -209,7 +247,7 @@ namespace X100_Message
 
         private void ext2EnableBtn_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("拡張機能関連の操作は自己責任です。\nよろしいですか？", "警告", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult result = MessageBox.Show("拡張機能関連の操作も自己責任です。\nよろしいですか？\n(初期ファームのみ有効化可能です)", "警告", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result == DialogResult.Yes)
             {
@@ -218,7 +256,7 @@ namespace X100_Message
         }
         private void ext2DisableBtn_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("拡張機能関連の操作は自己責任です。\nよろしいですか？", "警告", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult result = MessageBox.Show("拡張機能関連の操作も自己責任です。\nよろしいですか？", "警告", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result == DialogResult.Yes)
             {
@@ -229,9 +267,16 @@ namespace X100_Message
 
         private void ext1EnableBtn_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("工事中", "", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+            MessageBox.Show("工事中です。\n某無線雑誌をお買い求めの上有効化願います。", "", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
 
         }
+
+        private void djx100Ver_Click_1(object sender, EventArgs e)
+        {
+            SendCmd(Command.VER);
+        }
+
+
     }
 
 
