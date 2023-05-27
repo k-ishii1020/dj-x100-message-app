@@ -46,6 +46,12 @@ namespace X100_Message
             serialPort.BaseStream.WriteAsync(sendCmd, 0, sendCmd.Length);
         }
 
+        public void SendRawCmd(String cmd)
+        {
+            var sendRawCmd = Encoding.ASCII.GetBytes(cmd);
+            serialPort.BaseStream.WriteAsync(sendRawCmd, 0, sendRawCmd.Length);
+        }
+
         public bool IsOpen()
         {
             return serialPort.IsOpen;

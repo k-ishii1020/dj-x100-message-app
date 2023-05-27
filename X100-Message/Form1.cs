@@ -2,12 +2,21 @@ namespace X100_Message
 {
     public partial class Form1 : Form
     {
-        Uart uart = new Uart();
+        private string version = "1.3.0";
+        Uart uart = new();
+        Extend extend = new();
 
         // 
-        private bool firstConnectFlg = true;
-        private bool djx100ConnectFlg = false;
+        private bool isFirstConnect = true;
+        private bool isSucceedConnect = false;
         private string lastSendCmd = "";
+
+        // DJ-X100情報
+        private string mcuVer = "";
+        private bool isVaildExt1 = false;
+        private bool isVaildExt2 = false;
+
+
 
         public Form1()
         {
@@ -18,6 +27,9 @@ namespace X100_Message
         {
             InitComPort();
             InitFont();
+            this.Text = "DJ-X100 メッセージロガー Ver" + version;
+
+
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -29,6 +41,21 @@ namespace X100_Message
         {
             lastSendCmd = cmd;
             uart.SendCmd(cmd);
+        }
+
+        private void SendRawdCmd(String cmd)
+        {
+            lastSendCmd = cmd;
+            uart.SendRawCmd(cmd);
+        }
+
+        private bool IsResponseOk(String response)
+        {
+            if (response != null && response.Equals("\r\nOK\r\n"))
+            {
+                return true;
+            }
+            return false;
         }
 
         // DJ-X100に接続
@@ -46,24 +73,48 @@ namespace X100_Message
             {
                 await Task.Delay(500); // 非同期で受信しているため待機
 
-                if (djx100ConnectFlg)
+                if (isSucceedConnect)
                 {
                     connectBtn.Text = "切断";
                     msgOutputBtn.Enabled = true;
-                    djx100Ver.Enabled = true;
-                    ext1EnableBtn.Enabled = true;
-                    ext1DisableBtn.Enabled = true;
-                    ext2EnableBtn.Enabled = true;
-                    ext2DisableBtn.Enabled = true;
+
+                    ext1MenuItem.Enabled = true;
+                    ext2MenuItem.Enabled = true;
+
+                    warnLabel.Text = "DJ-X100接続済み";
+
+                    GetX100Info();
+                    await Task.Delay(1000);
+
+                    isFirstConnect = false;
                 }
                 else
                 {
+                    warnLabel.Text = "接続失敗";
                     MessageBox.Show("接続エラーが発生しました: ", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     CloseConnection();
                 }
 
             }
         }
+
+        private async void GetX100Info()
+        {
+            SendCmd(Command.VER);
+            await Task.Delay(100);
+            mcuLabel.Text = "MCU:" + mcuVer;
+
+            SendCmd(Command.EXT1_IS_VAILD);
+            await Task.Delay(100);
+            ext1Label.Text = isVaildExt1 ? "拡張機能1:有効" : "拡張機能1:無効";
+
+
+            SendCmd(Command.EXT2_IS_VAILD);
+            await Task.Delay(100);
+            ext2Label.Text = isVaildExt2 ? "拡張機能2:有効" : "拡張機能2:無効";
+
+        }
+
 
 
 
@@ -72,44 +123,69 @@ namespace X100_Message
         {
             var response = e.Data;
 
-            // 初回受信時
-            if (firstConnectFlg)
+            // 初回受信時のみ
+            if (isFirstConnect)
             {
                 if (response.Equals("\r\nDJ-X100\r\n"))
                 {
-                    djx100ConnectFlg = true;
-                    firstConnectFlg = false;
-                    warnLabel.Text = "DJ-X100接続済み";
-
+                    isSucceedConnect = true;
+                    return;
                 }
-                else
-                {
-                    warnLabel.Text = "接続失敗";
-                }
-                return;
             }
+
+
 
             switch (lastSendCmd)
             {
-                case Command.VER:
-                    MessageBox.Show(response, "DJ-X100バージョン情報", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                    return;
+
                 case Command.EXT1_DISABLE:
-                    MessageBox.Show("拡張機能1を無効化しました", "", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    if (IsResponseOk(response))
+                    {
+                        MessageBox.Show("拡張機能1を無効化しました", "", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    }
+                    else
+                    {
+                        MessageBox.Show(response, "操作に失敗しました。", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    }
                     return;
                 case Command.EXT2_ENABLE:
-                    MessageBox.Show("拡張機能2を有効化しました", "", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    if (IsResponseOk(response))
+                    {
+                        MessageBox.Show("拡張機能2を有効化しました", "", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    }
+                    else
+                    {
+                        MessageBox.Show(response, "操作に失敗しました。", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    }
                     return;
                 case Command.EXT2_DISABLE:
-                    MessageBox.Show("拡張機能2を無効化しました", "", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    if (IsResponseOk(response))
+                    {
+                        MessageBox.Show("拡張機能2を無効化しました", "", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    }
+                    else
+                    {
+                        MessageBox.Show(response, "操作に失敗しました。", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    }
+                    return;
+
+                case Command.VER:
+                    mcuVer = response.Replace("\r\n", "");
+                    mcuVer = mcuVer.Replace("ver", "");
+                    return;
+                case Command.EXT1_IS_VAILD:
+                    isVaildExt1 = response.Equals("\r\n0001\r\n");
+                    return;
+                case Command.EXT2_IS_VAILD:
+                    isVaildExt2 = response.Equals("\r\n0001\r\n");
                     return;
 
 
                 default:
                     // 受信データをテキストボックスに表示（UIスレッドで実行）
                     this.Invoke(new Action(() =>
-
                     {
+
 
                         DateTime now = DateTime.Now;
                         logTextBox.AppendText($"{now} >> {response}\r\n");
@@ -135,30 +211,35 @@ namespace X100_Message
         private void CloseConnection()
         {
             uart.Close();
-            MessageBox.Show("再接続する場合はDJ-X100を再起動してください", "", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
             warnLabel.Text = "接続していません";
             connectBtn.Text = "接続";
-            msgOutputBtn.Text = "メッセージ出力開始";
+
             msgOutputBtn.Enabled = false;
-            firstConnectFlg = true;
+            isFirstConnect = true;
         }
 
 
         private void MsgOutputBtn_Click(object sender, EventArgs e)
         {
-            if (msgOutputBtn.Text.Equals("メッセージ出力終了") && uart.IsOpen())
+            if (msgOutputBtn.Text.Equals("メッセージ出力終了"))
             {
-                CloseConnection();
+                SendRawdCmd("QUIT\r\n");
+                msgOutputBtn.Text = "メッセージ出力開始";
+                warnLabel.Text = "DJ-X100接続済み";
+
+
+                ext1MenuItem.Enabled = true;
+                ext2MenuItem.Enabled = true;
+
                 return;
             }
 
-            msgOutputBtn.Text = "メッセージ出力終了";
-            djx100Ver.Enabled = false;
-            ext1EnableBtn.Enabled = false;
-            ext1DisableBtn.Enabled = false;
-            ext2EnableBtn.Enabled = false;
-            ext2DisableBtn.Enabled = false;
             SendCmd(Command.OUTLINE);
+            msgOutputBtn.Text = "メッセージ出力終了";
+            warnLabel.Text = "メッセージ待機中…(周波数等の変更無効)";
+
+            ext1MenuItem.Enabled = false;
+            ext2MenuItem.Enabled = false;
         }
 
 
@@ -231,52 +312,47 @@ namespace X100_Message
 
         private void バージョン情報ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("DJ-X100メッセージロガー\nVer1.2.2\nCopyright(C) 2023 by kaz", "バージョン情報", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+            MessageBox.Show("DJ-X100メッセージロガー\nVer" + version + "\nCopyright(C) 2023 by kaz", "バージョン情報", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
         }
 
 
-        private void ext1DisableBtn_Click(object sender, EventArgs e)
-        {
-            DialogResult result = MessageBox.Show("拡張機能関連の操作も自己責任です。\nよろしいですか？", "警告", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-            if (result == DialogResult.Yes)
-            {
-                SendCmd(Command.EXT1_DISABLE);
-            }
-        }
 
-        private void ext2EnableBtn_Click(object sender, EventArgs e)
-        {
-            DialogResult result = MessageBox.Show("拡張機能関連の操作も自己責任です。\nよろしいですか？\n(初期ファームのみ有効化可能です)", "警告", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-            if (result == DialogResult.Yes)
-            {
-                SendCmd(Command.EXT2_ENABLE);
-            }
-        }
-        private void ext2DisableBtn_Click(object sender, EventArgs e)
-        {
-            DialogResult result = MessageBox.Show("拡張機能関連の操作も自己責任です。\nよろしいですか？", "警告", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-            if (result == DialogResult.Yes)
-            {
-                SendCmd(Command.EXT2_DISABLE);
-            }
 
-        }
+
+
+
 
         private void ext1EnableBtn_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("工事中です。\n某無線雑誌をお買い求めの上有効化願います。", "", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-
+            extend.IsExtendAccept(sender);
         }
 
-        private void djx100Ver_Click_1(object sender, EventArgs e)
+        private async void ext1DisableBtn_Click(object sender, EventArgs e)
         {
-            SendCmd(Command.VER);
+            if (extend.IsExtendAccept(sender)) SendCmd(Command.EXT1_DISABLE);
+
+            SendCmd(Command.EXT1_IS_VAILD);
+            await Task.Delay(100);
+            ext1Label.Text = isVaildExt1 ? "拡張機能1:有効" : "拡張機能1:無効";
         }
 
-
+        private async void ext2EnableBtn_Click(object sender, EventArgs e)
+        {
+            if (extend.IsExtendAccept(sender)) SendCmd(Command.EXT2_ENABLE);
+            SendCmd(Command.EXT2_IS_VAILD);
+            await Task.Delay(200);
+            ext2Label.Text = isVaildExt2 ? "拡張機能2:有効" : "拡張機能2:無効";
+        }
+        private async void ext2DisableBtn_Click(object sender, EventArgs e)
+        {
+            if (extend.IsExtendAccept(sender)) SendCmd(Command.EXT2_DISABLE);
+            SendCmd(Command.EXT2_IS_VAILD);
+            await Task.Delay(200);
+            ext2Label.Text = isVaildExt2 ? "拡張機能2:有効" : "拡張機能2:無効";
+        }
     }
 
 
