@@ -32,7 +32,7 @@
             ファイルToolStripMenuItem = new ToolStripMenuItem();
             ログクリアCToolStripMenuItem = new ToolStripMenuItem();
             終了ToolStripMenuItem = new ToolStripMenuItem();
-            拡張機能EToolStripMenuItem = new ToolStripMenuItem();
+            extMenuItem = new ToolStripMenuItem();
             ext1MenuItem = new ToolStripMenuItem();
             ext1EnableBtn = new ToolStripMenuItem();
             ext1DisableBtn = new ToolStripMenuItem();
@@ -58,6 +58,7 @@
             groupBox1 = new GroupBox();
             ext2Label = new Label();
             ext1Label = new Label();
+            restartBtn = new Button();
             menuStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
             groupBox1.SuspendLayout();
@@ -65,7 +66,7 @@
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { ファイルToolStripMenuItem, 拡張機能EToolStripMenuItem, toolStripMenuItem1 });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { ファイルToolStripMenuItem, extMenuItem, toolStripMenuItem1 });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(1126, 24);
@@ -93,41 +94,40 @@
             終了ToolStripMenuItem.Text = "終了(&X)";
             終了ToolStripMenuItem.Click += 終了ToolStripMenuItem_Click;
             // 
-            // 拡張機能EToolStripMenuItem
+            // extMenuItem
             // 
-            拡張機能EToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { ext1MenuItem, ext2MenuItem });
-            拡張機能EToolStripMenuItem.Name = "拡張機能EToolStripMenuItem";
-            拡張機能EToolStripMenuItem.Size = new Size(81, 20);
-            拡張機能EToolStripMenuItem.Text = "拡張機能(&E)";
+            extMenuItem.DropDownItems.AddRange(new ToolStripItem[] { ext1MenuItem, ext2MenuItem });
+            extMenuItem.Enabled = false;
+            extMenuItem.Name = "extMenuItem";
+            extMenuItem.Size = new Size(81, 20);
+            extMenuItem.Text = "拡張機能(&E)";
             // 
             // ext1MenuItem
             // 
             ext1MenuItem.DropDownItems.AddRange(new ToolStripItem[] { ext1EnableBtn, ext1DisableBtn });
-            ext1MenuItem.Enabled = false;
             ext1MenuItem.Name = "ext1MenuItem";
-            ext1MenuItem.Size = new Size(180, 22);
+            ext1MenuItem.Size = new Size(128, 22);
             ext1MenuItem.Text = "拡張機能1";
             // 
             // ext1EnableBtn
             // 
             ext1EnableBtn.Name = "ext1EnableBtn";
-            ext1EnableBtn.Size = new Size(180, 22);
+            ext1EnableBtn.Size = new Size(110, 22);
             ext1EnableBtn.Text = "有効化";
             ext1EnableBtn.Click += ext1EnableBtn_Click;
             // 
             // ext1DisableBtn
             // 
             ext1DisableBtn.Name = "ext1DisableBtn";
-            ext1DisableBtn.Size = new Size(180, 22);
+            ext1DisableBtn.Size = new Size(110, 22);
             ext1DisableBtn.Text = "無効化";
             ext1DisableBtn.Click += ext1DisableBtn_Click;
             // 
             // ext2MenuItem
             // 
             ext2MenuItem.DropDownItems.AddRange(new ToolStripItem[] { ext2EnableBtn, ext2DisableBtn });
-            ext2MenuItem.Enabled = false;
             ext2MenuItem.Name = "ext2MenuItem";
-            ext2MenuItem.Size = new Size(180, 22);
+            ext2MenuItem.Size = new Size(128, 22);
             ext2MenuItem.Text = "拡張機能2";
             // 
             // ext2EnableBtn
@@ -299,12 +299,13 @@
             // 
             // groupBox1
             // 
+            groupBox1.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             groupBox1.Controls.Add(ext2Label);
             groupBox1.Controls.Add(ext1Label);
             groupBox1.Controls.Add(mcuLabel);
-            groupBox1.Location = new Point(809, 603);
+            groupBox1.Location = new Point(937, 620);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(305, 100);
+            groupBox1.Size = new Size(177, 83);
             groupBox1.TabIndex = 22;
             groupBox1.TabStop = false;
             groupBox1.Text = "DJ-X100情報";
@@ -327,11 +328,24 @@
             ext1Label.TabIndex = 22;
             ext1Label.Text = "拡張機能1:";
             // 
+            // restartBtn
+            // 
+            restartBtn.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            restartBtn.Enabled = false;
+            restartBtn.Location = new Point(833, 676);
+            restartBtn.Name = "restartBtn";
+            restartBtn.Size = new Size(98, 23);
+            restartBtn.TabIndex = 23;
+            restartBtn.Text = "DJ-X100再起動";
+            restartBtn.UseVisualStyleBackColor = true;
+            restartBtn.Click += restartBtn_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1126, 728);
+            Controls.Add(restartBtn);
             Controls.Add(groupBox1);
             Controls.Add(fontComboBox);
             Controls.Add(label2);
@@ -379,7 +393,7 @@
         private ComboBox fontSizeComboBox;
         private Label label2;
         private ComboBox fontComboBox;
-        private ToolStripMenuItem 拡張機能EToolStripMenuItem;
+        private ToolStripMenuItem extMenuItem;
         private ToolStripMenuItem ext1MenuItem;
         private ToolStripMenuItem ext1EnableBtn;
         private ToolStripMenuItem ext1DisableBtn;
@@ -390,5 +404,6 @@
         private GroupBox groupBox1;
         private Label ext1Label;
         private Label ext2Label;
+        private Button restartBtn;
     }
 }

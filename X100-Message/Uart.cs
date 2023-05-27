@@ -7,9 +7,14 @@ namespace X100_Message
     {
         private SerialPort serialPort;
 
+        private ManualResetEvent mre = new ManualResetEvent(false);
+        private string response = "";
+
         // 基本コマンド
         private static string PREFIX = "AL~";
         private static string EOL = "\r";
+
+
 
         public bool InitSerialPort(String portNum)
         {
@@ -28,7 +33,6 @@ namespace X100_Message
             {
                 serialPort.Open();
                 serialPort.DataReceived += SerialPort_DataReceived;
-                SendCmd(Command.WHO);
             }
             catch (Exception ex)
             {
@@ -40,16 +44,43 @@ namespace X100_Message
         }
 
 
-        public void SendCmd(String cmd)
+        public string SendCmd(String cmd)
         {
             var sendCmd = Encoding.ASCII.GetBytes(PREFIX + cmd + EOL);
             serialPort.BaseStream.WriteAsync(sendCmd, 0, sendCmd.Length);
+
+            // Reset the event and clear the response
+            mre.Reset();
+            response = "";
+
+            // Wait for the event to be set in the DataReceived event handler
+            bool eventSet = mre.WaitOne(1000);  // 5 seconds timeout
+
+            // If the event was not set within the timeout period, handle the timeout
+            if (!eventSet)
+            {
+                MessageBox.Show("タイムアウトが発生しました", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
+
+            // Return the response
+            return response;
         }
 
-        public void SendRawCmd(String cmd)
+        public string SendRawCmd(String cmd)
         {
             var sendRawCmd = Encoding.ASCII.GetBytes(cmd);
             serialPort.BaseStream.WriteAsync(sendRawCmd, 0, sendRawCmd.Length);
+
+            // Reset the event and clear the response
+            mre.Reset();
+            response = "";
+
+            // Wait for the event to be set in the DataReceived event handler
+            mre.WaitOne();
+
+            // Return the response
+            return response;
         }
 
         public bool IsOpen()
@@ -80,6 +111,12 @@ namespace X100_Message
             var buffer = new byte[serialPort.BytesToRead];
             var bytesRead = serialPort.Read(buffer, 0, buffer.Length);
             var responce = Encoding.GetEncoding("Shift_JIS").GetString(buffer, 0, bytesRead);
+
+            // Set the response
+            response = responce;
+
+            // Signal that the response has been received
+            mre.Set();
 
             DataReceived?.Invoke(this, new DataReceivedEventArgs(responce));
         }
