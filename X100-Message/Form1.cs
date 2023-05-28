@@ -363,11 +363,13 @@ namespace X100_Message
             if (extend.IsExtendAccept(sender))
             {
 
-                if (SendCmd(Command.EXT1_DISABLE, Command.OK))
+                if ((SendCmd(Command.EXT2_DISABLE, Command.OK) && SendCmd(Command.EXT1_DISABLE, Command.OK)))
                 {
-                    MessageBox.Show("拡張機能1を無効化しました", "", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    MessageBox.Show("拡張機能1,2を無効化しました", "", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 }
                 ext1Label.Text = SendCmd(Command.EXT1_IS_VAILD, Command.ENABLE) ? "拡張機能1:有効" : "拡張機能1:無効";
+                ext2Label.Text = SendCmd(Command.EXT2_IS_VAILD, Command.ENABLE) ? "拡張機能2:有効" : "拡張機能2:無効";
+
             }
         }
 
