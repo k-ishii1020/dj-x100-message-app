@@ -49,21 +49,20 @@ namespace X100_Message
             var sendCmd = Encoding.ASCII.GetBytes(PREFIX + cmd + EOL);
             serialPort.BaseStream.WriteAsync(sendCmd, 0, sendCmd.Length);
 
-            // Reset the event and clear the response
             mre.Reset();
             response = "";
+            bool eventSet = mre.WaitOne(3000);
 
-            // Wait for the event to be set in the DataReceived event handler
-            bool eventSet = mre.WaitOne(1000);  // 5 seconds timeout
-
-            // If the event was not set within the timeout period, handle the timeout
             if (!eventSet)
             {
+                if(cmd.Equals(Command.DSPTHRU))
+                {
+                    MessageBox.Show("誓約してください", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return "誓約していない";
+                }
                 MessageBox.Show("タイムアウトが発生しました", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             }
-
-            // Return the response
             return response;
         }
 

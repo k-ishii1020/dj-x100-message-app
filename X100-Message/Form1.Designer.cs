@@ -49,7 +49,7 @@
             comComboBox = new ComboBox();
             comLabel = new Label();
             msgOutputBtn = new Button();
-            logFileOutFlg = new CheckBox();
+            isLogFileOutput = new CheckBox();
             label1 = new Label();
             fontSizeComboBox = new ComboBox();
             label2 = new Label();
@@ -59,6 +59,7 @@
             ext2Label = new Label();
             ext1Label = new Label();
             restartBtn = new Button();
+            searchBtn = new Button();
             menuStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
             groupBox1.SuspendLayout();
@@ -237,16 +238,16 @@
             msgOutputBtn.UseVisualStyleBackColor = true;
             msgOutputBtn.Click += MsgOutputBtn_Click;
             // 
-            // logFileOutFlg
+            // isLogFileOutput
             // 
-            logFileOutFlg.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            logFileOutFlg.AutoSize = true;
-            logFileOutFlg.Location = new Point(159, 675);
-            logFileOutFlg.Name = "logFileOutFlg";
-            logFileOutFlg.Size = new Size(68, 19);
-            logFileOutFlg.TabIndex = 11;
-            logFileOutFlg.Text = "ログ出力";
-            logFileOutFlg.UseVisualStyleBackColor = true;
+            isLogFileOutput.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            isLogFileOutput.AutoSize = true;
+            isLogFileOutput.Location = new Point(159, 675);
+            isLogFileOutput.Name = "isLogFileOutput";
+            isLogFileOutput.Size = new Size(68, 19);
+            isLogFileOutput.TabIndex = 11;
+            isLogFileOutput.Text = "ログ出力";
+            isLogFileOutput.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -293,9 +294,9 @@
             mcuLabel.AutoSize = true;
             mcuLabel.Location = new Point(6, 19);
             mcuLabel.Name = "mcuLabel";
-            mcuLabel.Size = new Size(36, 15);
+            mcuLabel.Size = new Size(23, 15);
             mcuLabel.TabIndex = 21;
-            mcuLabel.Text = "MCU:";
+            mcuLabel.Text = "ver";
             // 
             // groupBox1
             // 
@@ -340,18 +341,32 @@
             restartBtn.UseVisualStyleBackColor = true;
             restartBtn.Click += restartBtn_Click;
             // 
+            // searchBtn
+            // 
+            searchBtn.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            searchBtn.Enabled = false;
+            searchBtn.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            searchBtn.Location = new Point(897, 646);
+            searchBtn.Name = "searchBtn";
+            searchBtn.Size = new Size(34, 28);
+            searchBtn.TabIndex = 24;
+            searchBtn.Text = "🔎";
+            searchBtn.UseVisualStyleBackColor = true;
+            searchBtn.Click += search_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1126, 728);
+            Controls.Add(searchBtn);
             Controls.Add(restartBtn);
             Controls.Add(groupBox1);
             Controls.Add(fontComboBox);
             Controls.Add(label2);
             Controls.Add(fontSizeComboBox);
             Controls.Add(label1);
-            Controls.Add(logFileOutFlg);
+            Controls.Add(isLogFileOutput);
             Controls.Add(msgOutputBtn);
             Controls.Add(comLabel);
             Controls.Add(comComboBox);
@@ -383,7 +398,7 @@
         private ComboBox comComboBox;
         private Label comLabel;
         private Button msgOutputBtn;
-        private CheckBox logFileOutFlg;
+        private CheckBox isLogFileOutput;
         private ToolStripStatusLabel warnLabel;
         private ToolStripStatusLabel toolStripStatusLabel2;
         private ToolStripMenuItem ログクリアCToolStripMenuItem;
@@ -405,5 +420,6 @@
         private Label ext1Label;
         private Label ext2Label;
         private Button restartBtn;
+        private Button searchBtn;
     }
 }

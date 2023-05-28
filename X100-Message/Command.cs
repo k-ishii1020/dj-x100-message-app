@@ -20,13 +20,14 @@ namespace X100_Message
         public const string EXT2_ENABLE = "EXT21";
         public const string EXT2_DISABLE = "EXT20";
 
+        public const string KEYS = "KEYS";
+        public const string FUNC = KEYS + "FUNC";
+        public const string KEY_0 = KEYS + "0";
 
         //受信コマンド
         public const string OK = "OK";
         public const string NG = "NG";
         public const string ENABLE = "0001";
         public const string DISABLE = "0000";
-
-
     }
 }
