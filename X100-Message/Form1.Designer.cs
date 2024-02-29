@@ -101,7 +101,7 @@
             extMenuItem.Enabled = false;
             extMenuItem.Name = "extMenuItem";
             extMenuItem.Size = new Size(81, 20);
-            extMenuItem.Text = "拡張機能(&E)";
+            extMenuItem.Text = "拡張機能(初期FWのみ)(&E)";
             // 
             // ext1MenuItem
             // 
