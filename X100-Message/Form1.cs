@@ -2,7 +2,7 @@ namespace X100_Message
 {
     public partial class Form1 : Form
     {
-        private string version = "2.0.0";
+        private string version = "2.1.0";
         Uart uart = new();
         Extend extend = new();
 
@@ -158,15 +158,7 @@ namespace X100_Message
          */
         private String SendCmd(string cmd)
         {
-            String response = uart.SendCmd(cmd).Replace("\r\n", "");
-
-            if (response.Equals(Command.NG))
-            {
-                MessageBox.Show("応答異常", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return "レスポンス異常";
-            }
-
-            return response;
+            return uart.SendCmd(cmd).Replace("\r\n", "");
         }
 
         private bool SendCmd(string cmd, string expectResponse)
@@ -253,8 +245,46 @@ namespace X100_Message
         private void GetX100Info()
         {
             mcuLabel.Text = SendCmd(Command.VER);
-            ext1Label.Text = SendCmd(Command.EXT1_IS_VAILD, Command.ENABLE) ? "拡張機能1:有効" : "拡張機能1:無効";
-            ext2Label.Text = SendCmd(Command.EXT2_IS_VAILD, Command.ENABLE) ? "拡張機能2:有効" : "拡張機能2:無効";
+
+            // 初期ファーム以外は虫眼鏡非活性化
+            if (!mcuLabel.Text.Equals("1.00 - 003"))
+            {
+                searchBtn.Enabled = false;
+            }
+
+            // 拡張機能1チェック
+            String ext1Status = SendCmd(Command.EXT1_IS_VAILD);
+            switch (ext1Status)
+            {
+                case "0001":
+                    ext1Label.Text = "拡張機能1:有効";
+                    break;
+
+                case "0000":
+                    ext1Label.Text = "拡張機能1:無効";
+                    break;
+
+                default:
+                    ext1Label.Text = "拡張機能1:不明";
+                    break;
+            }
+
+            // 拡張機能2チェック
+            String ext2Status = SendCmd(Command.EXT2_IS_VAILD);
+            switch (ext2Status)
+            {
+                case "0001":
+                    ext2Label.Text = "拡張機能2:有効";
+                    break;
+
+                case "0000":
+                    ext2Label.Text = "拡張機能2:無効";
+                    break;
+
+                default:
+                    ext2Label.Text = "拡張機能2:不明";
+                    break;
+            }
         }
 
 
@@ -322,7 +352,17 @@ namespace X100_Message
                     warnLabel.Text = "DJ-X100接続済み";
                     extMenuItem.Enabled = true;
                     restartBtn.Enabled = true;
-                    searchBtn.Enabled = true;
+
+                    // 初期ファーム以外は虫眼鏡非活性化
+                    if (!mcuLabel.Text.Equals("1.00 - 003"))
+                    {
+                        searchBtn.Enabled = false;
+                    }
+                    else
+                    {
+                        searchBtn.Enabled = true;
+                    }
+
                     isWaitMessage = false;
                 }
                 return;
@@ -331,7 +371,17 @@ namespace X100_Message
             if (SendCmd(Command.OUTLINE, Command.OK))
             {
                 msgOutputBtn.Text = "メッセージ出力終了";
-                warnLabel.Text = "メッセージ待機中…(周波数等の変更無効)";
+
+                // 初期ファームは周波数変更無効
+                if (mcuLabel.Text.Equals("1.00 - 003"))
+                {
+                    warnLabel.Text = "メッセージ待機中…(周波数等の変更無効)";
+                }
+                else
+                {
+                    warnLabel.Text = "メッセージ待機中…(スキャン可)";
+                }
+
                 extMenuItem.Enabled = false;
                 restartBtn.Enabled = false;
                 searchBtn.Enabled = false;
