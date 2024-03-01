@@ -302,6 +302,13 @@ namespace X100_Message
             this.Invoke(new Action(() =>
             {
                 DateTime now = DateTime.Now;
+
+                if (isDisplayReceiverNameOnly.Checked)
+                {
+                    if (!response.Contains("sn”­MŽÒ–¼")) return;
+
+                }
+
                 logTextBox.AppendText($"{now} >> {response}\r\n");
 
                 if (isLogFileOutput.Checked)
