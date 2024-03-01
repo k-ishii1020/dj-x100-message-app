@@ -60,7 +60,7 @@
             ext1Label = new Label();
             restartBtn = new Button();
             searchBtn = new Button();
-            isDisplayReceiverNameOnly = new CheckBox();
+            isDisplaySenderNameOnly = new CheckBox();
             menuStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
             groupBox1.SuspendLayout();
@@ -355,23 +355,23 @@
             searchBtn.UseVisualStyleBackColor = true;
             searchBtn.Click += search_Click;
             // 
-            // isDisplayReceiverNameOnly
+            // isDisplaySenderNameOnly
             // 
-            isDisplayReceiverNameOnly.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            isDisplayReceiverNameOnly.AutoSize = true;
-            isDisplayReceiverNameOnly.Location = new Point(394, 674);
-            isDisplayReceiverNameOnly.Name = "isDisplayReceiverNameOnly";
-            isDisplayReceiverNameOnly.Size = new Size(184, 19);
-            isDisplayReceiverNameOnly.TabIndex = 25;
-            isDisplayReceiverNameOnly.Text = "発信者のみ表示(特定通信向け)";
-            isDisplayReceiverNameOnly.UseVisualStyleBackColor = true;
+            isDisplaySenderNameOnly.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            isDisplaySenderNameOnly.AutoSize = true;
+            isDisplaySenderNameOnly.Location = new Point(394, 674);
+            isDisplaySenderNameOnly.Name = "isDisplaySenderNameOnly";
+            isDisplaySenderNameOnly.Size = new Size(184, 19);
+            isDisplaySenderNameOnly.TabIndex = 25;
+            isDisplaySenderNameOnly.Text = "発信者のみ表示(特定通信向け)";
+            isDisplaySenderNameOnly.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1126, 728);
-            Controls.Add(isDisplayReceiverNameOnly);
+            Controls.Add(isDisplaySenderNameOnly);
             Controls.Add(searchBtn);
             Controls.Add(restartBtn);
             Controls.Add(groupBox1);
@@ -434,6 +434,6 @@
         private Label ext2Label;
         private Button restartBtn;
         private Button searchBtn;
-        private CheckBox isDisplayReceiverNameOnly;
+        private CheckBox isDisplaySenderNameOnly;
     }
 }

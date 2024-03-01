@@ -303,10 +303,9 @@ namespace X100_Message
             {
                 DateTime now = DateTime.Now;
 
-                if (isDisplayReceiverNameOnly.Checked)
+                if (isDisplaySenderNameOnly.Checked)
                 {
                     if (!response.Contains("sn”­MÒ–¼")) return;
-
                 }
 
                 logTextBox.AppendText($"{now} >> {response}\r\n");
