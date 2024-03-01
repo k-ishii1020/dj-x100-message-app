@@ -60,6 +60,7 @@
             ext1Label = new Label();
             restartBtn = new Button();
             searchBtn = new Button();
+            isDisplayReceiverNameOnly = new CheckBox();
             menuStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
             groupBox1.SuspendLayout();
@@ -84,14 +85,14 @@
             // ログクリアCToolStripMenuItem
             // 
             ログクリアCToolStripMenuItem.Name = "ログクリアCToolStripMenuItem";
-            ログクリアCToolStripMenuItem.Size = new Size(133, 22);
+            ログクリアCToolStripMenuItem.Size = new Size(132, 22);
             ログクリアCToolStripMenuItem.Text = "ログクリア(&C)";
             ログクリアCToolStripMenuItem.Click += ログクリアCToolStripMenuItem_Click;
             // 
             // 終了ToolStripMenuItem
             // 
             終了ToolStripMenuItem.Name = "終了ToolStripMenuItem";
-            終了ToolStripMenuItem.Size = new Size(133, 22);
+            終了ToolStripMenuItem.Size = new Size(132, 22);
             終了ToolStripMenuItem.Text = "終了(&X)";
             終了ToolStripMenuItem.Click += 終了ToolStripMenuItem_Click;
             // 
@@ -100,7 +101,7 @@
             extMenuItem.DropDownItems.AddRange(new ToolStripItem[] { ext1MenuItem, ext2MenuItem });
             extMenuItem.Enabled = false;
             extMenuItem.Name = "extMenuItem";
-            extMenuItem.Size = new Size(81, 20);
+            extMenuItem.Size = new Size(151, 20);
             extMenuItem.Text = "拡張機能(初期FWのみ)(&E)";
             // 
             // ext1MenuItem
@@ -184,14 +185,14 @@
             // warnLabel
             // 
             warnLabel.Name = "warnLabel";
-            warnLabel.Size = new Size(87, 17);
+            warnLabel.Size = new Size(86, 17);
             warnLabel.Text = "接続していません";
             // 
             // toolStripStatusLabel2
             // 
             toolStripStatusLabel2.ImageAlign = ContentAlignment.BottomCenter;
             toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            toolStripStatusLabel2.Size = new Size(1024, 17);
+            toolStripStatusLabel2.Size = new Size(1025, 17);
             toolStripStatusLabel2.Spring = true;
             toolStripStatusLabel2.Text = " （秘密の保護）第59条 何人も法律に別段の定めがある場合を除くほか、特定の相手方に対して行われる無線通信を傍受してその存在若しくは内容を漏らし、又はこれを窃用してはならない。";
             toolStripStatusLabel2.TextAlign = ContentAlignment.MiddleRight;
@@ -211,7 +212,7 @@
             // 
             comComboBox.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             comComboBox.FormattingEnabled = true;
-            comComboBox.Location = new Point(159, 642);
+            comComboBox.Location = new Point(203, 643);
             comComboBox.Name = "comComboBox";
             comComboBox.Size = new Size(121, 23);
             comComboBox.TabIndex = 8;
@@ -220,7 +221,7 @@
             // 
             comLabel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             comLabel.AutoSize = true;
-            comLabel.Location = new Point(93, 646);
+            comLabel.Location = new Point(137, 647);
             comLabel.Name = "comLabel";
             comLabel.Size = new Size(60, 15);
             comLabel.TabIndex = 9;
@@ -242,7 +243,7 @@
             // 
             isLogFileOutput.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             isLogFileOutput.AutoSize = true;
-            isLogFileOutput.Location = new Point(159, 675);
+            isLogFileOutput.Location = new Point(394, 646);
             isLogFileOutput.Name = "isLogFileOutput";
             isLogFileOutput.Size = new Size(68, 19);
             isLogFileOutput.TabIndex = 11;
@@ -253,7 +254,7 @@
             // 
             label1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             label1.AutoSize = true;
-            label1.Location = new Point(233, 676);
+            label1.Location = new Point(135, 675);
             label1.Name = "label1";
             label1.Size = new Size(40, 15);
             label1.TabIndex = 17;
@@ -263,7 +264,7 @@
             // 
             fontSizeComboBox.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             fontSizeComboBox.FormattingEnabled = true;
-            fontSizeComboBox.Location = new Point(279, 671);
+            fontSizeComboBox.Location = new Point(181, 670);
             fontSizeComboBox.Name = "fontSizeComboBox";
             fontSizeComboBox.Size = new Size(43, 23);
             fontSizeComboBox.TabIndex = 18;
@@ -273,7 +274,7 @@
             // 
             label2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             label2.AutoSize = true;
-            label2.Location = new Point(324, 676);
+            label2.Location = new Point(226, 675);
             label2.Name = "label2";
             label2.Size = new Size(18, 15);
             label2.TabIndex = 19;
@@ -283,7 +284,7 @@
             // 
             fontComboBox.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             fontComboBox.FormattingEnabled = true;
-            fontComboBox.Location = new Point(348, 671);
+            fontComboBox.Location = new Point(250, 670);
             fontComboBox.Name = "fontComboBox";
             fontComboBox.Size = new Size(121, 23);
             fontComboBox.TabIndex = 20;
@@ -354,11 +355,23 @@
             searchBtn.UseVisualStyleBackColor = true;
             searchBtn.Click += search_Click;
             // 
+            // isDisplayReceiverNameOnly
+            // 
+            isDisplayReceiverNameOnly.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            isDisplayReceiverNameOnly.AutoSize = true;
+            isDisplayReceiverNameOnly.Location = new Point(394, 674);
+            isDisplayReceiverNameOnly.Name = "isDisplayReceiverNameOnly";
+            isDisplayReceiverNameOnly.Size = new Size(184, 19);
+            isDisplayReceiverNameOnly.TabIndex = 25;
+            isDisplayReceiverNameOnly.Text = "発信者のみ表示(特定通信向け)";
+            isDisplayReceiverNameOnly.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1126, 728);
+            Controls.Add(isDisplayReceiverNameOnly);
             Controls.Add(searchBtn);
             Controls.Add(restartBtn);
             Controls.Add(groupBox1);
@@ -421,5 +434,6 @@
         private Label ext2Label;
         private Button restartBtn;
         private Button searchBtn;
+        private CheckBox isDisplayReceiverNameOnly;
     }
 }
